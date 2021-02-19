@@ -55,6 +55,10 @@ function s:SID()
 	return matchstr(expand('<sfile>'), '<SNR>\d\+_')
 endfunction
 
+function s:right_status()
+  return "%=%{exists('g:loaded_fugitive')? fugitive#head() : ''}"
+endfunction
+
 let s:dirsep = fnamemodify(getcwd(),':p')[-1:]
 let s:centerbuf = winbufnr(0)
 let s:tablineat = has('tablineat')
@@ -164,7 +168,7 @@ function! buftabline#render()
 
 	let swallowclicks = '%'.(1 + tabpagenr('$')).'X'
 	return s:tablineat
-		\ ? join(map(tabs,'"%#BufTabLine".v:val.hilite."#" . "%".v:val.num."@'.s:sid.'switch_buffer@" . strtrans(v:val.label)'),'') . '%#BufTabLineFill#' . swallowclicks
+		\ ? join(map(tabs,'"%#BufTabLine".v:val.hilite."#" . "%".v:val.num."@'.s:sid.'switch_buffer@" . strtrans(v:val.label)'),'') . '%#BufTabLineFill#' . swallowclicks . s:right_status()
 		\ : swallowclicks . join(map(tabs,'"%#BufTabLine".v:val.hilite."#" . strtrans(v:val.label)'),'') . '%#BufTabLineFill#'
 endfunction
 
